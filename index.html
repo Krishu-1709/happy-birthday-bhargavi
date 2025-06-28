@@ -13,12 +13,23 @@
       font-family: 'Roboto', sans-serif;
       color: #333;
       text-align: center;
+      overflow-x: hidden;
     }
 
     .container {
       padding: 60px 20px;
       max-width: 800px;
       margin: auto;
+      position: relative;
+      z-index: 2;
+      opacity: 0;
+      transform: scale(0.9);
+      transition: all 1s ease-in-out;
+    }
+
+    .reveal .container {
+      opacity: 1;
+      transform: scale(1);
     }
 
     h1 {
@@ -26,6 +37,7 @@
       font-size: 3.5rem;
       color: #d63384;
       margin-bottom: 20px;
+      text-shadow: 2px 2px 10px rgba(255, 176, 202, 0.5);
     }
 
     h2 {
@@ -61,17 +73,102 @@
     }
 
     footer {
-      font-size: 0.85rem;
-      color: #888;
+      font-size: 1rem;
+      color: #555;
       margin-top: 60px;
+      font-weight: bold;
+    }
+
+    .hearts, .emojis {
+      position: fixed;
+      bottom: -50px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .heart {
+      width: 30px;
+      height: 30px;
+      background: #ff6fa8;
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      animation: float 6s infinite ease-in-out;
+      transform: rotate(45deg);
+    }
+
+    .heart::before,
+    .heart::after {
+      content: '';
+      width: 30px;
+      height: 30px;
+      background: #ff6fa8;
+      position: absolute;
+      border-radius: 50%;
+    }
+
+    .heart::before {
+      top: -15px;
+      left: 0;
+    }
+
+    .heart::after {
+      left: -15px;
+      top: 0;
+    }
+
+    @keyframes float {
+      0% { transform: translate(-50%, 0) rotate(45deg); opacity: 1; }
+      100% { transform: translate(-50%, -800px) rotate(45deg); opacity: 0; }
+    }
+
+    .emoji {
+      position: absolute;
+      font-size: 2rem;
+      animation: floatEmoji 8s infinite ease-in-out;
+      bottom: 0;
+    }
+
+    @keyframes floatEmoji {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(-600px); opacity: 0; }
+    }
+
+    #reveal-btn {
+      margin-top: 100px;
+      font-size: 1.5rem;
+      background: #ffb3c6;
+      color: #fff;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(255, 182, 193, 0.5);
+      transition: background 0.3s ease;
+    }
+
+    #reveal-btn:hover {
+      background: #ff6392;
     }
   </style>
 </head>
 <body>
 
+  <!-- Background Music -->
+  <audio id="bg-music" autoplay loop muted>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_5c74997ed0.mp3?filename=birthday-party-happy-upbeat-113197.mp3" type="audio/mpeg">
+  </audio>
+  <button onclick="toggleMusic()" style="position:fixed; top:20px; right:20px; background:#fff; border:2px solid #d63384; color:#d63384; border-radius:10px; padding:6px 12px; z-index:999; cursor:pointer;">🔊 Toggle Music</button>
+
   <canvas class="confetti" id="confetti-canvas"></canvas>
 
-  <div class="container">
+  <!-- Surprise Reveal Button -->
+  <button id="reveal-btn" onclick="revealMessage()">🎁 Tap to Reveal Your Birthday Surprise 🎉</button>
+
+  <!-- Main Content -->
+  <div class="container" id="message">
     <img src="https://i.postimg.cc/pXX0rt5t/472338054-1588292975386854-1360038558324134898-n.jpg" alt="Bhargavi's Photo">
     <h1>Happy Birthday Bhargavi! 🎉</h1>
     <h2>You are amazing, and today we celebrate YOU 💖</h2>
@@ -87,25 +184,54 @@
       May all your dreams come true. 🦋🌈🎁
     </p>
 
-    <footer>Made with love ♥ | Just for you, Bhargavi</footer>
+    <p style="font-style: italic; color: #d63384;">
+      Stay awesome, stay weird, and never stop being our favorite pookie 💫
+    </p>
+
+    <footer>
+      Made with infinite love, sparkles, and bad jokes by Krishna 🍬💌<br>
+      (aka your certified best friend and birthday hypeman 🎤)
+    </footer>
   </div>
 
+  <!-- Floating Hearts -->
+  <div class="hearts">
+    <div class="heart" style="left:20%; animation-delay:0s;"></div>
+    <div class="heart" style="left:40%; animation-delay:1s;"></div>
+    <div class="heart" style="left:60%; animation-delay:2s;"></div>
+    <div class="heart" style="left:80%; animation-delay:3s;"></div>
+  </div>
+
+  <!-- Floating Emojis -->
+  <div class="emojis">
+    <div class="emoji" style="left:10%">🎂</div>
+    <div class="emoji" style="left:25%">🎈</div>
+    <div class="emoji" style="left:50%">🎉</div>
+    <div class="emoji" style="left:75%">🦄</div>
+  </div>
+
+  <!-- Scripts -->
   <script>
-    // Simple confetti effect using canvas-confetti
     const script = document.createElement('script');
     script.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js';
     script.onload = () => {
       const canvas = document.getElementById('confetti-canvas');
       const myConfetti = confetti.create(canvas, { resize: true, useWorker: true });
       setInterval(() => {
-        myConfetti({
-          particleCount: 100,
-          spread: 70,
-          origin: { y: 0.6 }
-        });
+        myConfetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
       }, 1500);
     };
     document.body.appendChild(script);
+
+    function toggleMusic() {
+      const music = document.getElementById('bg-music');
+      music.muted = !music.muted;
+    }
+
+    function revealMessage() {
+      document.body.classList.add('reveal');
+      document.getElementById('reveal-btn').style.display = 'none';
+    }
   </script>
 
 </body>
