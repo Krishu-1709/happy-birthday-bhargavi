@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Birthday Bhargavi!</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #ffe0e6, #fff7f9);
+      font-family: 'Roboto', sans-serif;
+      color: #333;
+      text-align: center;
+    }
+
+    .container {
+      padding: 60px 20px;
+      max-width: 800px;
+      margin: auto;
+    }
+
+    h1 {
+      font-family: 'Pacifico', cursive;
+      font-size: 3.5rem;
+      color: #d63384;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      color: #6c757d;
+      margin-bottom: 40px;
+    }
+
+    img {
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 6px solid #ffccd5;
+      margin-bottom: 30px;
+    }
+
+    p {
+      font-size: 1.2rem;
+      line-height: 1.8;
+      max-width: 650px;
+      margin: 0 auto 30px;
+    }
+
+    .confetti {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    footer {
+      font-size: 0.85rem;
+      color: #888;
+      margin-top: 60px;
+    }
+  </style>
+</head>
+<body>
+
+  <canvas class="confetti" id="confetti-canvas"></canvas>
+
+  <div class="container">
+    <img src="https://i.postimg.cc/pXX0rt5t/472338054-1588292975386854-1360038558324134898-n.jpg" alt="Bhargavi's Photo">
+    <h1>Happy Birthday Bhargavi! 🎉</h1>
+    <h2>You are amazing, and today we celebrate YOU 💖</h2>
+
+    <p>
+      On this special day, I just want to remind you how incredible you are.
+      Your smile, kindness, energy, and the way you bring joy to everyone around you
+      — it’s truly something magical. 🎂✨
+    </p>
+
+    <p>
+      Wishing you laughter, love, cake, and endless happiness today and always.
+      May all your dreams come true. 🦋🌈🎁
+    </p>
+
+    <footer>Made with love ♥ | Just for you, Bhargavi</footer>
+  </div>
+
+  <script>
+    // Simple confetti effect using canvas-confetti
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js';
+    script.onload = () => {
+      const canvas = document.getElementById('confetti-canvas');
+      const myConfetti = confetti.create(canvas, { resize: true, useWorker: true });
+      setInterval(() => {
+        myConfetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 }
+        });
+      }, 1500);
+    };
+    document.body.appendChild(script);
+  </script>
+
+</body>
+</html>
